@@ -26,9 +26,31 @@ import javafx.animation.Timeline;
  
 public class Main extends Application {
 	
+	double horseSpeed1;
+	double horseSpeed2;
+	double horseSpeed3;
+	double horseSpeed4;
+	
+	TranslateTransition transition1;
+	TranslateTransition transition2;
+	TranslateTransition transition3;
+	TranslateTransition transition4;
+	double borderPaneWidth;
+	Timeline timeline;
+	/*
+	try {
+	FileInputStream horseFile1 = new FileInputStream("./src/horse1.jpg");
+	FileInputStream horseFile2 = new FileInputStream("./src/horse2.jpg");
+	FileInputStream horseFile3 = new FileInputStream("./src/horse3.jpg");
+	FileInputStream horseFile4 = new FileInputStream("./src/horse4.jpg");
+	} catch (Exception e) {
+		
+	}*/
+	
 	@Override
     public void start(Stage stage) throws Exception {
     	BorderPane borderPane = new BorderPane();
+    	borderPaneWidth = borderPane.getWidth();
     	
     	HBox hbox = new HBox(3);
     	hbox.setAlignment(Pos.CENTER);
@@ -47,7 +69,7 @@ public class Main extends Application {
     	imageView1.setImage(horse1);
     	imageView1.setFitHeight(150);
     	imageView1.setFitWidth(200);
-    	imageView1.setX(1);
+    	
     	
     	Image horse2 = new Image(horseFile2);
     	ImageView imageView2 = new ImageView();
@@ -66,6 +88,8 @@ public class Main extends Application {
     	imageView4.setImage(horse4);
     	imageView4.setFitHeight(150);
     	imageView4.setFitWidth(200);
+
+    	
     	
     	//Run Button create and event handler
     	Button runButton = new Button("Run");
@@ -74,27 +98,28 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Run Button was pressed");
+                runButton.setDisable(true);
                 
-                double horseSpeed1 = (double) ((Math.random() * ( 4 - 1 ) + 1));
-                TranslateTransition transition1 = new TranslateTransition(Duration.seconds(horseSpeed1), imageView1);
+                horseSpeed1 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+                transition1 = new TranslateTransition(Duration.seconds(horseSpeed1), imageView1);
                 transition1.setFromX(0);
                 transition1.setToX((borderPane.getWidth() - 200));
-                transition1.play(); 
+                transition1.play();
                 
-                double horseSpeed2 = (double) ((Math.random() * ( 4 - 1 ) + 1));
-                TranslateTransition transition2 = new TranslateTransition(Duration.seconds(horseSpeed2), imageView2);
+                horseSpeed2 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+                transition2 = new TranslateTransition(Duration.seconds(horseSpeed2), imageView2);
                 transition2.setFromX(0);
                 transition2.setToX((borderPane.getWidth() - 200));
                 transition2.play(); 
                 
-                double horseSpeed3 = (double) ((Math.random() * ( 4 - 1 ) + 1));
-                TranslateTransition transition3 = new TranslateTransition(Duration.seconds(horseSpeed3), imageView3);
+                horseSpeed3 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+                transition3 = new TranslateTransition(Duration.seconds(horseSpeed3), imageView3);
                 transition3.setFromX(0);
                 transition3.setToX((borderPane.getWidth() - 200));
                 transition3.play(); 
                 
-                double horseSpeed4 = (double) ((Math.random() * ( 4 - 1 ) + 1));
-                TranslateTransition transition4 = new TranslateTransition(Duration.seconds(horseSpeed4), imageView4);
+                horseSpeed4 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+                transition4 = new TranslateTransition(Duration.seconds(horseSpeed4), imageView4);
                 transition4.setFromX(0);
                 transition4.setToX((borderPane.getWidth() - 200));
                 transition4.play(); 
@@ -106,11 +131,7 @@ public class Main extends Application {
                 System.out.println("Nums: " + nums[1]);
                 
                 
-                double borderPaneWidth = borderPane.getWidth();
-                double imageView1Width = imageView1.getLayoutBounds().getWidth();
-                
-                Duration startDuration = Duration.ZERO;
-                Duration endDuration = Duration.seconds(1);//(nums[nums.length-1]);
+               
                 
                 /*
                 KeyValue startKeyValue = new KeyValue(imageView1.translateXProperty(), borderPaneWidth);
@@ -125,9 +146,8 @@ public class Main extends Application {
                 timeline.play();
                 */
                 
-                Timeline timeline = new Timeline(
+                timeline = new Timeline(
                 	    new KeyFrame(Duration.seconds(sortedNums[sortedNums.length-1]), e -> {
-                	        // code to execute here...
                 	    	double min = nums[0];
                 	    	int index = 0;
                 	    	for(int i=0; i < nums.length; i++) {
@@ -138,9 +158,14 @@ public class Main extends Application {
                 	    		}
                 	    	}
                 	    	JOptionPane.showMessageDialog(null, "Horse " + (index+1) + " is the winner");
+                	    	
+                	    	transition1.stop();
+                	    	transition2.stop();
+                	    	transition3.stop();
+                	    	transition4.stop();
                 	    })
                 	);
-                	timeline.play();  
+                	timeline.play();  	 
             }
         });
     	
@@ -151,7 +176,34 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println(resetButton.getText() + " was pressed");
+                runButton.setDisable(false);
+               // imageView1.setX(value);
+                timeline.stop();
                 
+                transition1.stop();
+                TranslateTransition reset1 = new TranslateTransition(Duration.seconds(0.001), imageView1);
+                reset1.setFromX((borderPane.getWidth() - 200));
+                reset1.setToX(0);
+                reset1.play();
+
+                transition2.stop();
+                TranslateTransition reset2 = new TranslateTransition(Duration.seconds(0.001), imageView2);
+                reset2.setFromX((borderPane.getWidth() - 200));
+                reset2.setToX(0);
+                reset2.play();
+                
+                transition3.stop();
+                TranslateTransition reset3 = new TranslateTransition(Duration.seconds(0.001), imageView3);
+                reset3.setFromX((borderPane.getWidth() - 200));
+                reset3.setToX(0);
+                reset3.play();
+                
+                transition4.stop();
+                TranslateTransition reset4 = new TranslateTransition(Duration.seconds(0.001), imageView4);
+                reset4.setFromX((borderPane.getWidth() - 200));
+                reset4.setToX(0);
+                reset4.play();
+               
                 
             }
         });
@@ -177,6 +229,40 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
     }
+	
+	class H1 extends Thread{
+		/*public void run() {
+			horseSpeed1 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+            transition1 = new TranslateTransition(Duration.seconds(horseSpeed1), imageView1);
+            transition1.setFromX(0);
+            transition1.setToX((borderPaneWidth - 200));
+            transition1.play();
+            
+            horseSpeed2 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+            transition2 = new TranslateTransition(Duration.seconds(horseSpeed2), imageView2);
+            transition2.setFromX(0);
+            transition2.setToX((borderPane.getWidth() - 200));
+            transition2.play(); 
+            
+            horseSpeed3 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+            transition3 = new TranslateTransition(Duration.seconds(horseSpeed3), imageView3);
+            transition3.setFromX(0);
+            transition3.setToX((borderPane.getWidth() - 200));
+            transition3.play(); 
+            
+            horseSpeed4 = (double) ((Math.random() * ( 4 - 1 ) + 1));
+            transition4 = new TranslateTransition(Duration.seconds(horseSpeed4), imageView4);
+            transition4.setFromX(0);
+            transition4.setToX((borderPane.getWidth() - 200));
+            transition4.play(); 
+            
+            double[] nums = {horseSpeed1, horseSpeed2, horseSpeed3, horseSpeed4};
+            double[] sortedNums = {horseSpeed1, horseSpeed2, horseSpeed3, horseSpeed4};
+            Arrays.sort(sortedNums);
+            System.out.println("Max Time in seconds: " + sortedNums[sortedNums.length-1]);
+            System.out.println("Nums: " + nums[1]);
+		}*/
+	}
  
     public static void main(String[] args) {
         Application.launch(args);
