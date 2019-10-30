@@ -174,7 +174,7 @@ public class Main extends Application {
                 	    			index = i;	
                 	    		}
                 	    	}
-                	    	JOptionPane.showMessageDialog(null, "Horse " + (index+1) + " is the winner");
+                	    	JOptionPane.showMessageDialog(null, "Horse " + (index+1) + " is the winner" + "\n" + "Horse " + (index+1) + " completed the race in " + (sortedNums[sortedNums.length-1]) + "seconds.";
                 	    	
                 	    	transition1.stop();
                 	    	transition2.stop();
